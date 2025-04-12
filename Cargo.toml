@@ -5,6 +5,7 @@ edition = "2024"
 
 [dependencies]
 diesel = { version = "2.2.9", features = ["postgres"] }
+envy = "0.4"
 dotenvy = "0.15"
-serenity = "0.12"
-tokio = { version = "1.44.2", features = ["macros", "rt-multi-thread"] }
+poise = "0.6.1"
+tokio = "1.44.2"
