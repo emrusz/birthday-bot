@@ -8,4 +8,4 @@ diesel = { version = "2.2.9", features = ["postgres"] }
 envy = "0.4"
 dotenvy = "0.15"
 poise = "0.6.1"
-tokio = "1.44.2"
+tokio = { version = "1.44.2", features = ["rt-multi-thread", "macros"]}

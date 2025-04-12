@@ -1,29 +1,22 @@
+use dotenvy::dotenv;
 use poise::serenity_prelude as serenity;
 
-struct Data {}
+pub mod commands;
+
 type Error = Box<dyn std::error::Error + Send + Sync>;
 type Context<'a> = poise::Context<'a, Data, Error>;
 
-#[poise::command(slash_command, prefix_command)]
-async fn age(
-    ctx: Context<'_>,
-    #[description = "Selected user"] user: Option<serenity::User>,
-) -> Result<(), Error> {
-    let u = user.as_ref().unwrap_or_else(|| ctx.author());
-    let response = format!("{}'s account was created at {}", u.name, u.created_at());
-    ctx.say(response).await?;
-    Ok(())
-}
+pub struct Data {}
 
 #[tokio::main]
 async fn main() {
-    dotenvy::dotenv().ok();
+    dotenv().ok();
     let token = std::env::var("DISCORD_TOKEN").expect("Missing DISCORD_TOKEN.");
     let intents = serenity::GatewayIntents::non_privileged();
 
     let framework = poise::Framework::builder()
         .options(poise::FrameworkOptions {
-            commands: vec![age()],
+            commands: vec![commands::ping::ping(), commands::register::register()],
             ..Default::default()
         })
         .setup(|ctx, _ready, framework| {
