@@ -1,12 +1,13 @@
 use diesel::prelude::*;
 use diesel_async::pooled_connection::AsyncDieselConnectionManager;
-use diesel_async::pooled_connection::deadpool::{Object, Pool};
+use diesel_async::pooled_connection::deadpool::Pool;
 use diesel_async::{AsyncPgConnection, RunQueryDsl};
 use dotenvy::dotenv;
 use poise::serenity_prelude as serenity;
-use std::sync::Arc;
 
 pub mod commands;
+pub mod schema;
+pub mod models;
 
 type Error = Box<dyn std::error::Error + Send + Sync>;
 type Context<'a> = poise::Context<'a, Data, Error>;
