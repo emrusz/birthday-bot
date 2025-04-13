@@ -26,5 +26,6 @@ Cargo.lock
 
 /target
 .env
+diesel.toml
 
 .idea/
