@@ -4,12 +4,13 @@ use crate::{Context, Error};
 use diesel::prelude::*;
 use diesel::{delete, insert_into};
 use diesel_async::RunQueryDsl;
-use poise::serenity_prelude as serenity;
+use poise::serenity_prelude::CreateEmbed;
+use poise::{CreateReply, serenity_prelude as serenity};
 
 //todo:
 //  - Update on reinsert
-//  - Embeds for add and remove
 //  - Correct command name
+//  - Check role permissions
 
 #[poise::command(
     slash_command,
@@ -37,7 +38,19 @@ pub async fn register(
         .execute(&mut connection)
         .await?;
 
-    ctx.say("added").await?;
+    ctx.send(
+        CreateReply::default()
+            .embed(
+                CreateEmbed::new()
+                    .title("Guild Registered")
+                    .description("Guild successfully added to the database.")
+                    .field("Guild ID", format!("{}", guild_id.to_string()), true)
+                    .field("Role ID", format!("{}", role.to_string()), true)
+                    .color(serenity::Color::DARK_GREEN),
+            )
+            .ephemeral(true),
+    )
+    .await?;
 
     Ok(())
 }
@@ -53,6 +66,18 @@ pub async fn unregister(ctx: Context<'_>) -> Result<(), Error> {
         .execute(&mut connection)
         .await?;
 
-    ctx.say("removed").await?;
+    ctx.send(
+        poise::CreateReply::default()
+            .embed(
+                CreateEmbed::new()
+                    .title("Guild Unregistered")
+                    .description("Guild successfully removed from the database.")
+                    .field("Guild ID", format!("{}", guild_id.to_string()), true)
+                    .color(serenity::Color::DARK_RED),
+            )
+            .ephemeral(true),
+    )
+    .await?;
+
     Ok(())
 }
