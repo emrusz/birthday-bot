@@ -15,7 +15,7 @@ diesel::table! {
         id -> Int4,
         #[max_length = 20]
         snowflake -> Varchar,
-        birthday -> Date,
+        birthday -> Timestamptz,
     }
 }
 
@@ -30,8 +30,4 @@ diesel::table! {
 diesel::joinable!(member_guild -> guild (guild_id));
 diesel::joinable!(member_guild -> member (member_id));
 
-diesel::allow_tables_to_appear_in_same_query!(
-    guild,
-    member,
-    member_guild,
-);
+diesel::allow_tables_to_appear_in_same_query!(guild, member, member_guild,);

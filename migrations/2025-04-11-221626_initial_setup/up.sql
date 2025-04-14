@@ -9,7 +9,7 @@ create table member
 (
     id        int primary key generated always as identity,
     snowflake varchar(20) not null,
-    birthday  date        not null
+    birthday  timestamptz not null
 );
 
 create table member_guild
