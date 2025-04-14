@@ -1,7 +1,6 @@
-use diesel::pg::Pg;
-use diesel_async::AsyncPgConnection;
+use diesel_async::pooled_connection::deadpool::Pool;
 use diesel_async::pooled_connection::AsyncDieselConnectionManager;
-use diesel_async::pooled_connection::deadpool::{Object, Pool};
+use diesel_async::AsyncPgConnection;
 use dotenvy::dotenv;
 use poise::serenity_prelude as serenity;
 

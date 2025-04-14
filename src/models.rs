@@ -3,8 +3,8 @@
 #![allow(unused)]
 #![allow(clippy::all)]
 
-use diesel::{Queryable, Selectable};
 use chrono::NaiveDateTime;
+use diesel::{Queryable, Selectable};
 
 #[derive(Queryable, Selectable, Debug)]
 #[diesel(table_name = crate::schema::guild)]
