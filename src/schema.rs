@@ -15,7 +15,7 @@ diesel::table! {
         id -> Int4,
         #[max_length = 20]
         snowflake -> Varchar,
-        birthday -> Date,
+        birthday -> Timestamptz,
     }
 }
 

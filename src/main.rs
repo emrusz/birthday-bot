@@ -1,13 +1,12 @@
-use diesel::prelude::*;
+use diesel_async::AsyncPgConnection;
 use diesel_async::pooled_connection::AsyncDieselConnectionManager;
 use diesel_async::pooled_connection::deadpool::Pool;
-use diesel_async::{AsyncPgConnection, RunQueryDsl};
 use dotenvy::dotenv;
 use poise::serenity_prelude as serenity;
 
 pub mod commands;
-pub mod schema;
 pub mod models;
+pub mod schema;
 
 type Error = Box<dyn std::error::Error + Send + Sync>;
 type Context<'a> = poise::Context<'a, Data, Error>;
@@ -31,7 +30,11 @@ async fn main() {
 
     let framework = poise::Framework::builder()
         .options(poise::FrameworkOptions {
-            commands: vec![commands::ping::ping(), commands::register::register()],
+            commands: vec![
+                commands::ping::ping(),
+                commands::register::register(),
+                commands::select::select(),
+            ],
             ..Default::default()
         })
         .setup(|ctx, _ready, framework| {
