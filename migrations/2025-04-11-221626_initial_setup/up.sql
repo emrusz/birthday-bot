@@ -1,14 +1,14 @@
 create table guild
 (
     id            int primary key generated always as identity,
-    snowflake     varchar(20) not null,
+    snowflake varchar(20) not null unique,
     birthday_role varchar(20) not null
 );
 
 create table member
 (
     id        int primary key generated always as identity,
-    snowflake varchar(20) not null,
+    snowflake varchar(20) not null unique,
     birthday  timestamptz not null
 );
 

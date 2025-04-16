@@ -35,6 +35,9 @@ pub async fn register(
             snowflake.eq(guild_id.to_string()),
             birthday_role.eq(role.to_string()),
         ))
+        .on_conflict(snowflake)
+        .do_update()
+        .set(birthday_role.eq(role.to_string()))
         .execute(&mut connection)
         .await?;
 
@@ -67,13 +70,13 @@ pub async fn unregister(ctx: Context<'_>) -> Result<(), Error> {
         .await?;
 
     ctx.send(
-        poise::CreateReply::default()
+        CreateReply::default()
             .embed(
                 CreateEmbed::new()
                     .title("Guild Unregistered")
                     .description("Guild successfully removed from the database.")
                     .field("Guild ID", format!("{}", guild_id.to_string()), true)
-                    .color(serenity::Color::DARK_RED),
+                    .color(serenity::Color::DARK_GREEN),
             )
             .ephemeral(true),
     )
