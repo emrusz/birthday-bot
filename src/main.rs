@@ -34,7 +34,7 @@ async fn main() {
                 commands::ping::ping(),
                 commands::register::register(),
                 commands::select::select(),
-                commands::guild::guild_comm(),
+                commands::guild::guild_register(),
             ],
             ..Default::default()
         })

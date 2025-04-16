@@ -7,21 +7,17 @@ use diesel_async::RunQueryDsl;
 use poise::serenity_prelude::CreateEmbed;
 use poise::{CreateReply, serenity_prelude as serenity};
 
-//todo:
-//  - Update on reinsert
-//  - Correct command name
-//  - Check role permissions
-
 #[poise::command(
     slash_command,
     subcommands("register", "unregister"),
-    required_permissions = "ADMINISTRATOR"
+    required_permissions = "ADMINISTRATOR",
+    rename = "guild"
 )]
-pub async fn guild_comm(_ctx: Context<'_>) -> Result<(), Error> {
+pub async fn guild_register(_ctx: Context<'_>) -> Result<(), Error> {
     Ok(())
 }
 
-/// Registers your guild with Birthday Bot
+/// Registers your guild with Birthday Bot.
 #[poise::command(slash_command)]
 pub async fn register(
     ctx: Context<'_>,
@@ -58,7 +54,7 @@ pub async fn register(
     Ok(())
 }
 
-/// Removes your guild from Birthday Bot
+/// Removes your guild from Birthday Bot.
 #[poise::command(slash_command)]
 pub async fn unregister(ctx: Context<'_>) -> Result<(), Error> {
     let guild_id = ctx.guild_id().unwrap();
