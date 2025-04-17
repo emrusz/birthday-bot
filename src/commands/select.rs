@@ -3,7 +3,12 @@ use crate::schema::{guild, member};
 use crate::{Context, Error};
 use diesel_async::RunQueryDsl;
 
-#[poise::command(slash_command, subcommands("all_members", "all_guilds"))]
+#[poise::command(
+    slash_command,
+    owners_only,
+    hide_in_help,
+    subcommands("all_members", "all_guilds")
+)]
 pub async fn select(_ctx: Context<'_>) -> Result<(), Error> {
     Ok(())
 }
