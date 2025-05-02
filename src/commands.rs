@@ -1,3 +1,4 @@
+pub mod birthday;
 pub mod guild;
 pub mod ping;
 pub mod register;

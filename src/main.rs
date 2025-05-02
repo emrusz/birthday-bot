@@ -35,6 +35,7 @@ async fn main() {
                 commands::register::register(),
                 commands::select::select(),
                 commands::guild::guild_register(),
+                commands::birthday::birthday_tools(),
             ],
             ..Default::default()
         })
