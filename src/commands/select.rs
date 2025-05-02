@@ -20,8 +20,8 @@ pub async fn select(_ctx: Context<'_>) -> Result<(), Error> {
 /// Selects all members from database.
 #[poise::command(slash_command)]
 pub async fn all_members(ctx: Context<'_>) -> Result<(), Error> {
-    let mut conn = ctx.data().connection_pool.get().await?;
-    let data: Vec<Member> = member::table.load(&mut conn).await?;
+    let mut connection = ctx.data().connection_pool.get().await?;
+    let data: Vec<Member> = member::table.load(&mut connection).await?;
 
     ctx.say(format!("{:?}", data)).await?;
     Ok(())
@@ -30,8 +30,8 @@ pub async fn all_members(ctx: Context<'_>) -> Result<(), Error> {
 /// Selects all guilds from database.
 #[poise::command(slash_command)]
 pub async fn all_guilds(ctx: Context<'_>) -> Result<(), Error> {
-    let mut conn = ctx.data().connection_pool.get().await?;
-    let data: Vec<Guild> = guild::table.load(&mut conn).await?;
+    let mut connection = ctx.data().connection_pool.get().await?;
+    let data: Vec<Guild> = guild::table.load(&mut connection).await?;
 
     ctx.say(format!("{:?}", data)).await?;
     Ok(())
