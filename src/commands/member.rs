@@ -15,7 +15,7 @@ use poise::serenity_prelude::CreateEmbed;
     subcommands("register", "remove", "view"),
     rename = "birthday"
 )]
-pub async fn birthday_tools(_ctx: Context<'_>) -> Result<(), Error> {
+pub async fn birthday_register(_ctx: Context<'_>) -> Result<(), Error> {
     Ok(())
 }
 

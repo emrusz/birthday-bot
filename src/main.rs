@@ -35,13 +35,17 @@ async fn main() {
                 commands::register::register(),
                 commands::select::select(),
                 commands::guild::guild_register(),
-                commands::birthday::birthday_tools(),
+                commands::member::birthday_register(),
             ],
             ..Default::default()
         })
         .setup(|ctx, _ready, framework| {
             Box::pin(async move {
                 poise::builtins::register_globally(ctx, &framework.options().commands).await?;
+                ctx.set_activity(Some(serenity::gateway::ActivityData::custom(
+                    "🎂 Celebrating birthdays!",
+                )));
+
                 Ok(Data {
                     connection_pool: async_connection_pool,
                 })
