@@ -3,6 +3,7 @@ use diesel_async::pooled_connection::AsyncDieselConnectionManager;
 use diesel_async::pooled_connection::deadpool::Pool;
 use dotenvy::dotenv;
 use poise::serenity_prelude as serenity;
+use poise::serenity_prelude::GuildId;
 
 pub mod commands;
 pub mod models;
@@ -18,7 +19,9 @@ pub struct Data {
 #[tokio::main]
 async fn main() {
     dotenv().ok();
+
     let discord_token = std::env::var("DISCORD_TOKEN").expect("Missing DISCORD_TOKEN.");
+    let test_guild_id: Option<String> = std::env::var("TEST_GUILD_ID").ok();
     let gateway_intents = serenity::GatewayIntents::non_privileged();
 
     let pg_config = AsyncDieselConnectionManager::<AsyncPgConnection>::new(
@@ -32,7 +35,6 @@ async fn main() {
         .options(poise::FrameworkOptions {
             commands: vec![
                 commands::ping::ping(),
-                commands::register::register(),
                 commands::select::select(),
                 commands::guild::guild_register(),
                 commands::member::birthday_register(),
@@ -42,10 +44,21 @@ async fn main() {
         .setup(|ctx, _ready, framework| {
             Box::pin(async move {
                 poise::builtins::register_globally(ctx, &framework.options().commands).await?;
+                if test_guild_id.is_some() {
+                    poise::builtins::register_in_guild(
+                        ctx,
+                        &framework.options().commands,
+                        GuildId::new(
+                            test_guild_id
+                                .expect("Could not unwrap TEST_GUILD_ID")
+                                .parse()?,
+                        ),
+                    )
+                    .await?;
+                }
                 ctx.set_activity(Some(serenity::gateway::ActivityData::custom(
                     "🎂 Celebrating birthdays!",
                 )));
-
                 Ok(Data {
                     connection_pool: async_connection_pool,
                 })
