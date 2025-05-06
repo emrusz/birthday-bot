@@ -1,5 +1,4 @@
-use crate::schema::member::dsl::member;
-use crate::schema::member::{birthday, snowflake};
+use crate::schema::member::dsl::*;
 use crate::{Context, Error};
 use chrono::NaiveDateTime;
 use diesel::dsl::{delete, insert_into};
@@ -23,26 +22,42 @@ pub async fn birthday_register(_ctx: Context<'_>) -> Result<(), Error> {
 #[poise::command(slash_command)]
 pub async fn view(ctx: Context<'_>) -> Result<(), Error> {
     let mut connection = ctx.data().connection_pool.get().await?;
-    let member_birthday: NaiveDateTime = member
+    let member_birthday: Option<NaiveDateTime> = member
         .select(birthday)
         .filter(snowflake.eq(ctx.author().id.to_string()))
         .first(&mut connection)
-        .await?;
+        .await
+        .optional()?;
 
-    // todo handle record not found with embed
-
-    ctx.send(
-        CreateReply::default()
-            .embed(
-                CreateEmbed::new()
-                    .title("Success!")
-                    .description("Your birthday is in the database.")
-                    .field("Birthday", member_birthday.to_string(), true)
-                    .color(serenity::Color::BLURPLE),
+    match member_birthday {
+        None => {
+            ctx.send(
+                CreateReply::default()
+                    .embed(
+                        CreateEmbed::new()
+                            .title("Birthday Not Found")
+                            .description("Your birthday is in not the database.")
+                            .color(serenity::Color::DARK_RED),
+                    )
+                    .ephemeral(true),
             )
-            .ephemeral(true),
-    )
-    .await?;
+            .await?;
+        }
+        Some(member_birthday) => {
+            ctx.send(
+                CreateReply::default()
+                    .embed(
+                        CreateEmbed::new()
+                            .title("Success!")
+                            .description("Your birthday is in the database.")
+                            .field("Birthday", member_birthday.to_string(), true)
+                            .color(serenity::Color::DARK_GREEN),
+                    )
+                    .ephemeral(true),
+            )
+            .await?;
+        }
+    }
 
     Ok(())
 }
